@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}People{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    {% for user in users %}
+        <div class="col">
+        <a class="p-3" href="{{ user.get_absolute_url }}">
+          {% thumbnail user.profile.photo "180x180" crop="100%"  as im %}
+            <image class="img-fluid rounded-circle rounded mx-auto d-block" src="{{ im.url }}"></image>
+          {% endthumbnail %}
+        </a>
+        <div class="card-body">
+        <p class="text-center fw-bold">
+          {{ user.get_full_name }}
+        </p>
+        </div>
+        </div>
+        
+    {% endfor %}
+    </div>
+  </div>
+{% endblock %}

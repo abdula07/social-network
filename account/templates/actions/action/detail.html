@@ -1,0 +1,47 @@
+{% load thumbnail %}
+
+{% with user=action.user profile=action.user.profile %}
+
+<div class="row">
+  <div class="col-md-6">
+  {% if profile.photo %}
+      {% thumbnail user.profile.photo "600x600" crop="100%" as im %}
+        <a href="{{ user.get_absolute_url }}">
+          <image class="img-fluid" src="{{ im.url }}" alt="{{ user.get_full_name }}" class="item-img"></image>
+        </a>
+      {% endthumbnail %}
+    {% endif %}
+
+    <div class="border p-3">
+    <p>
+      <span>{{ action.created|timesince }} ago</span>
+      <a href="{{ user.get_absolute_url }}">
+        {{ user.first_name }}
+      </a>
+      {{ action.verb }}
+      {% if action.target %}http://127.0.0.1:8000/account/users/Admin/
+        {% with target=action.target %}
+          <a href="{{ target.get_absolute_url }}">{{ target }}</a>
+        {% endwith %}
+      {% endif %}
+    </p>
+    </div>
+  <div class="col-md-6">
+  </div>
+</div>
+
+    <!--
+    {% if action.target %}
+      {% with target=action.target %}
+        {% if target.image %}
+          {% thumbnail target.image "80x80" crop="100%" as im %}
+            <a href="{{ target.get_absolute_url }}">
+              <img src="{{ im.url }}" class="item-img">
+            </a>
+          {% endthumbnail %}
+        {% endif %}
+      {% endwith %}
+    {% endif %}-->
+  </div>
+
+{% endwith %}

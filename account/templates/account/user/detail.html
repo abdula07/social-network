@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}{{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row row-cols-2">
+
+      <div class="col-md-4">
+        {% thumbnail user.profile.photo "150x150" crop="100%" as im %}
+          <img src="{{ im.url }}" class="img-fluid rounded-circle rounded mx-auto d-block p-4">
+        {% endthumbnail %}
+
+      </div>
+      <div class="col-md-5">
+          <h1>{{ user.username }}</h1>
+          {% with total_followers=user.followers.count %}
+ 			<span class="count">
+ 			<span class="total">{{ total_followers }}</span>
+ 					follower{{ total_followers|pluralize }}
+ 			</span>
+ 			<a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
+ 			class="follow button">
+ 			{% if request.user not in user.followers.all %}
+ 				<button type="button" class="px-4 btn btn-danger">Follow</button>
+ 			{% else %}
+ 				<button type="button" class="px-4 btn btn-danger">Unfollow</button>
+ 				
+ 			{% endif %}
+ 			</a>
+
+ </div>
+ {% endwith %}
+      </div>
+    </div>
+      <div class="border-top"></div>
+      
+  </div>
+{% endblock %}
+
+{% block domready %}
+  $('a.follow').click(function(e){
+    e.preventDefault();
+    $.post('{% url "user_follow" %}',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok') {
+          var previous_action = $('a.follow').data('action');
+
+          // toggle data-action
+          $('a.follow').data('action',
+            previous_action == 'follow' ? 'unfollow' : 'follow');
+          // toggle link text
+          $('a.follow').text(
+            previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+          // update total followers
+          var previous_followers = parseInt(
+            $('span.count .total').text());
+          $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+        }
+      }
+    );
+  });
+{% endblock %}

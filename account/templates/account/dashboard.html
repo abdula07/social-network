@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+  <div class="container">
+  	<div class="row">
+  		<div class="col">
+
+  			
+  			<button type="button" class="btn btn-dark" style="width: 100%">
+  				<h1>Welcome to the main page of the site</h1>
+  			</button>
+  		</div>
+  	</div>
+  	<br>
+  	<div class="row">
+  		<div class="col">
+  			<a href="{% url 'edit' %}">
+  				<button type="button" class="btn btn-primary" style="width: 100%">
+  					<h1>Change account here</h1>
+  				</button>
+  			</a>
+  			
+  			
+  		</div>
+
+  		<div class="col">
+  			<button type="button" class="btn btn-warning" style="width: 100%">
+  				<h1>Bookmarks here</h1>
+  			</button>
+  			
+  		</div>
+  	</div>
+  	<br>
+  	<div class="border">
+  		<br>
+  	</div>
+  	<br>
+     {% for action in actions %}
+        {% include "actions/action/detail.html" %}
+     {% endfor %}
+
+  </div>
+{% endblock %}
