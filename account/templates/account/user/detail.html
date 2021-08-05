@@ -51,7 +51,7 @@
   <div class="container">
   <div class="row row-cols-3 row-cols-sm-3 row-cols-md-6 g-1">
     {% for image in images %}
-      <div class="col-auto">
+      <div class="col-3">
         <a href="{{ image.get_absolute_url }}">
           {% thumbnail image.image "200x200" crop="100%" as im %}
             <a href="{{ image.get_absolute_url }}">
