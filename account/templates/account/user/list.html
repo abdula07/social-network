@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="container">
-  <div class="row row-cols-4 row-cols-sm-4 row-cols-md-5 g-3">
+  <div class="row row-cols-xs-3 row-cols-4 row-cols-sm-4 row-cols-md-5 g-3">
     {% for user in users %}
       <div class="col-auto">
         <a class="p-3" href="{{ user.get_absolute_url }}">
