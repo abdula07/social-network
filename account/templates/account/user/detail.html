@@ -1,42 +1,72 @@
 {% extends "base.html" %}
 {% load thumbnail %}
+{% load static %}
 
 {% block title %}{{ user.get_full_name }}{% endblock %}
 
 {% block content %}
-  <div class="container">
-    <div class="row row-cols-2">
-
-      <div class="col-md-4">
+<div class="container">
+  <div class="row row-cols-2">
+    <div class="col-md-4">
+      {% if user.profile.photo %}
         {% thumbnail user.profile.photo "150x150" crop="100%" as im %}
-          <img src="{{ im.url }}" class="img-fluid rounded-circle rounded mx-auto d-block p-4">
+          <img src="{{ im.url }}" 
+               class="img-fluid rounded-circle
+                      rounded mx-auto d-block p-4">
         {% endthumbnail %}
+      {% else %}
+        <image class="img-fluid rounded-circle 
+                      rounded mx-auto d-block"
+               src="{% static 'img/no_image.png' %}" 
+               style="width: 150px; height: 150px">
+        </image>
+      {% endif %}
 
-      </div>
-      <div class="col-md-5">
-          <h1>{{ user.username }}</h1>
-          {% with total_followers=user.followers.count %}
+    </div>
+    <div class="col-md-5">
+      <h1>{{ user.username }}</h1>
+      {% with total_followers=user.followers.count %}
  			<span class="count">
- 			<span class="total">{{ total_followers }}</span>
+ 			<span class="total">
+        {{ total_followers }}
+      </span>
  					follower{{ total_followers|pluralize }}
  			</span>
- 			<a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow"
- 			class="follow button">
- 			{% if request.user not in user.followers.all %}
- 				<button type="button" class="px-4 btn btn-danger">Follow</button>
- 			{% else %}
- 				<button type="button" class="px-4 btn btn-danger">Unfollow</button>
- 				
- 			{% endif %}
+ 			<a href="#" data-id="{{ user.id }}" 
+         data-action="{% if request.user in user.followers.all %}
+                      un{% endif %}follow"
+ 			   class="button">
+ 			  {% if request.user not in user.followers.all %}
+                  Follow
+ 			  {% else %}
+                  Unfollow
+ 			  {% endif %}
  			</a>
-
- </div>
- {% endwith %}
-      </div>
     </div>
-      <div class="border-top"></div>
-      
+      {% endwith %}
   </div>
+  <div class="border-top"></div>
+  </div>
+  <br>
+  <div class="container">
+  <div class="row row-cols-3 row-cols-sm-3 row-cols-md-6 g-1">
+    {% for image in images %}
+      <div class="col-auto">
+        <a href="{{ image.get_absolute_url }}">
+          {% thumbnail image.image "200x200" crop="100%" as im %}
+            <a href="{{ image.get_absolute_url }}">
+            <image class="img-fluid" 
+                   src="{{ im.url }}">
+            </image>
+        </a>
+          {% endthumbnail %}
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block domready %}
@@ -61,7 +91,7 @@
           // update total followers
           var previous_followers = parseInt(
             $('span.count .total').text());
-          $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+            $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
         }
       }
     );

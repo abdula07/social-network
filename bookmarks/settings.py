@@ -160,8 +160,8 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_TWITTER_KEY = '' # Twitter Consumer Key
 SOCIAL_AUTH_TWITTER_SECRET = '' # Twitter Consumer Secret
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '' # Google Consumer Key
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '' # Google Consumer Secret
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '475321744492-e79k57qhanqefujug53qe1n0ecrr3uqh.apps.googleusercontent.com' # Google Consumer Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '5Fa-84Y2Y09ZwnEzyjtl6eGC' # Google Consumer Secret
 
 
 from django.urls import reverse_lazy

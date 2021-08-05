@@ -3,16 +3,15 @@
 
 
 {% block content %}
-  <div class="container">
-      <div class="row">
+<div class="container">
+    <div class="row">
         <div class="col-md">
-        </div>
-        <div class="col-md">
-
-            <div class="border p-5">
-              <h1 class="text-center pb-2">Interstellar</h1>
-              <form action="" method="post">
-                {% bootstrap_form form %}
+    </div>
+    <div class="col-md">
+      <div class="border p-5">
+        <h1 class="text-center pb-2">Interstellar</h1>
+          <form action="" method="post">
+            {% bootstrap_form form %}
                 {% csrf_token %}
                 <button class="btn btn-primary" style="width: 100%">Login</button>
               </form>              
@@ -25,8 +24,7 @@
         </div>
         <div class="col-md">
         </div>
-      </div>
-      
-  </div>
+      </div>   
+</div>
   
 {% endblock %}

@@ -1,26 +1,37 @@
 {% extends "base.html" %}
 {% load thumbnail %}
+{% load static %}
 
 {% block title %}People{% endblock %}
 
 {% block content %}
-  <div class="container">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+<div class="container">
+  <div class="row row-cols-4 row-cols-sm-4 row-cols-md-5 g-3">
     {% for user in users %}
-        <div class="col">
+      <div class="col-auto">
         <a class="p-3" href="{{ user.get_absolute_url }}">
-          {% thumbnail user.profile.photo "180x180" crop="100%"  as im %}
-            <image class="img-fluid rounded-circle rounded mx-auto d-block" src="{{ im.url }}"></image>
-          {% endthumbnail %}
+          {% if user.profile.photo %}
+            {% thumbnail user.profile.photo "180x180" crop="100%"  as im %}
+              <image class="img-fluid rounded-circle 
+                            rounded mx-auto d-block" 
+                     src="{{ im.url }}"> 
+              </image>
+            {% endthumbnail %}
+          {% else %}
+            <image class="img-fluid rounded-circle 
+                          rounded mx-auto d-block"
+                   src="{% static 'img/no_image.png' %}" 
+                   style="width: 180px; height: 180px">    
+            </image>
+          {% endif %}
         </a>
         <div class="card-body">
-        <p class="text-center fw-bold">
-          {{ user.get_full_name }}
-        </p>
+          <p class="text-center fw-bold">
+            {{ user.get_full_name }}
+          </p>
         </div>
-        </div>
-        
+      </div>  
     {% endfor %}
-    </div>
   </div>
+</div>
 {% endblock %}

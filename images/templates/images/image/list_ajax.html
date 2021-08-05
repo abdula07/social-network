@@ -1,21 +1,18 @@
 {% load thumbnail %}
 
 <div class="container">
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+  <div class="row row-cols-3 row-cols-sm-3 row-cols-md-5 g-1">
     {% for image in images %}
-      <div class="col">
+      <div class="col-auto">
         <a href="{{ image.get_absolute_url }}">
-          {% thumbnail image.image "300x300" crop="100%" as im %}
+          {% thumbnail image.image "250x250" crop="100%" as im %}
             <a href="{{ image.get_absolute_url }}">
-            <image class="img-fluid rounded mx-auto d-block" src="{{ im.url }}"></image>
-        </a>
+            <image class="img-fluid" 
+                   src="{{ im.url }}">
+            </image>
+            </a>
           {% endthumbnail %}
         </a>
-        <div class="card-body">
-          <p class="text-center fw-bold">
-            {{ image.title }}
-          </p>
-        </div>
       </div>
     {% endfor %}
   </div>
