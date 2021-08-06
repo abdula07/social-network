@@ -15,11 +15,10 @@
                       rounded mx-auto d-block p-4">
         {% endthumbnail %}
       {% else %}
-        <image class="img-fluid rounded-circle 
-                      rounded mx-auto d-block"
-               src="{% static 'img/no_image.png' %}" 
-               style="width: 150px; height: 150px">
-        </image>
+        <img src="{% static 'img/no_image.png' %}"
+             class="img-fluid rounded-circle 
+                      rounded mx-auto d-block">
+        
       {% endif %}
 
     </div>
@@ -49,7 +48,10 @@
   </div>
   <br>
   <div class="container">
-  <div class="row row-cols-3 row-cols-sm-3 row-cols-md-6 g-1">
+  <div class="row 
+              row-cols-3 
+              row-cols-sm-3 
+              row-cols-md-6 g-1">
     {% for image in images %}
       <div class="col-3">
         <a href="{{ image.get_absolute_url }}">

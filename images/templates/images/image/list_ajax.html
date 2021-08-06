@@ -1,11 +1,12 @@
 {% load thumbnail %}
 
 <div class="container">
-  <div class="row row-cols-xs-3
+  <div class="row 
+              row-cols-3
               row-cols-sm-3
               row-cols-md-5 g-1">
     {% for image in images %}
-      <div class="col-3 col-xs-3">
+      <div class="col">
         <a href="{{ image.get_absolute_url }}">
           {% thumbnail image.image "250x250" crop="100%" as im %}
             <a href="{{ image.get_absolute_url }}">
