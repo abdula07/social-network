@@ -3,9 +3,9 @@
 {% block title %}Images bookmarked{% endblock %}
 
 {% block content %}
-  
-
-  {% include "images/image/list_ajax.html" %}
+  <div id="image-list">
+    {% include "images/image/list_ajax.html" %}
+  </div>
 {% endblock %}
 
 {% block domready %}
