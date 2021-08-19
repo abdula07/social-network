@@ -23,26 +23,30 @@
 
     </div>
     <div class="col-md-5">
-      <h1>{{ user.username }}</h1>
-      {% with total_followers=user.followers.count %}
- 			<span class="count">
- 			<span class="total">
-        {{ total_followers }}
-      </span>
+    	<h1>{{ user.username }}</h1>
+    	{% with total_followers=user.followers.count %}
+      		<span class="count
+      					 border p-1">
+ 					<span class="total">{{ total_followers }}</span>
  					follower{{ total_followers|pluralize }}
- 			</span>
- 			<a href="#" data-id="{{ user.id }}" 
+      		</span>
+      		<span class="px-2"></span>
+ 			<a href="#"
+ 			   data-id="{{ user.id }}" 
          data-action="{% if request.user in user.followers.all %}
                       un{% endif %}follow"
- 			   class="button">
+ 			   class="follow
+ 			   		    button
+ 			   		    border p-1
+ 			   		    btn-outline-primary">
  			  {% if request.user not in user.followers.all %}
                   Follow
  			  {% else %}
                   Unfollow
  			  {% endif %}
  			</a>
+ 		{% endwith %}
     </div>
-      {% endwith %}
   </div>
   <div class="border-top"></div>
   </div>
@@ -83,19 +87,17 @@
         if (data['status'] == 'ok') {
           var previous_action = $('a.follow').data('action');
 
-          // toggle data-action
-          $('a.follow').data('action',
-            previous_action == 'follow' ? 'unfollow' : 'follow');
-          // toggle link text
-          $('a.follow').text(
-            previous_action == 'follow' ? 'Unfollow' : 'Follow');
+          
+          $('a.follow').data('action', previous_action == 'follow' ? 'unfollow' : 'follow');
+          
+          $('a.follow').text(previous_action == 'follow' ? 'Unfollow' : 'Follow');
 
-          // update total followers
-          var previous_followers = parseInt(
-            $('span.count .total').text());
+          
+          var previous_followers = parseInt($('span.count .total').text());
             $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
         }
       }
     );
   });
 {% endblock %}
+

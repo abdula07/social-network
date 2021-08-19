@@ -36,3 +36,6 @@ class ImageCreateForm(forms.ModelForm):
         if commit:
             image.save()
         return image
+
+class SearchForm(forms.Form):
+    query = forms.CharField()

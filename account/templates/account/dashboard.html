@@ -17,10 +17,11 @@
   <div class="row">
   	<div class="col">
   		<a href="{% url 'edit' %}">
-  			<button type="button" 
-                class="btn btn-primary" 
+  			<button type="sumbit" 
+                class="btn btn-danger" 
                 style="width: 100%">
-  				<h1>Change account here</h1>
+  				<a href="javascript:{% include 'bookmarklet_launcher.js' %}">
+          Bookmark it</a>
   			</button>
   		</a>	
   	</div>
@@ -37,8 +38,18 @@
   	<br>
   </div>
   <br>
-    {% for action in actions %}
-      {% include "actions/action/detail.html" %}
-    {% endfor %}
+  <div class="row">
+    <dic class="col-12
+                col-sm-12
+                col-md">
+      {% for action in actions %}
+        {% include "actions/action/detail.html" %}
+      {% endfor %}
+    </dic>
+    <div class="col-auto
+                col-sm-12
+                col-md">
+    </div>
+  </div>
 </div>
 {% endblock %}

@@ -6,6 +6,14 @@
 
 {% block content %}
 <div class="container">
+  <a href="{% url 'search_user' %}">
+        <form>
+            <input class="form-control" 
+                   type="text" 
+                   placeholder="Search"
+                   aria-label="Search">
+        </form>
+  </a>
   <div class="row
               row-cols-3 
               row-cols-sm-4
@@ -21,10 +29,11 @@
               </image>
             {% endthumbnail %}
           {% else %}
-            <img src="{% static 'img/no_image.png' %}"
+            <image src="{% static 'img/no_image.png' %}"
                  class="img-fluid rounded-circle 
                           rounded mx-auto d-block"
-                 style="width: 180px; height: 180px">    
+                 style="width: 180px; height: 180px">
+            </image>   
           {% endif %}
         </a>
      

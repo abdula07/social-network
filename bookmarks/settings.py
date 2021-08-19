@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'actions.apps.ActionsConfig',
     'bootstrap5',
+    'django.contrib.postgres'
 ]
 
 MIDDLEWARE = [
@@ -88,8 +89,11 @@ WSGI_APPLICATION = 'bookmarks.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bookmarks',
+        'USER': 'bookmarks',
+        'PASSWORD': 'bookmarks'
+
     }
 }
 

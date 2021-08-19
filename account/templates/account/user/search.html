@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block content %}
+<div class="container">
+	<div class="border p-3 shadow">
+		{% if query %}
+			<h1>User containing {{ query }}</h1>
+			<h3>
+				{% with results.count as total_results %}
+					Found {{ total_results }}
+					result {{ total_results|pluralize }}
+				{% endwith %}
+			</h3>
+			{% for user in results %}
+				<h4>
+					<a href="{{ user.get_absolute_url }}">
+						{{ user }}
+					</a>
+				</h4>
+			{% empty %}
+				<p>
+					There are no results
+					for your query
+				</p>
+			{% endfor %}
+			<p>
+				<a href="{% url 'search_user' %}">
+					Search again
+				</a>
+			</p>
+		{% else %}
+			<form action="." method="get">
+				{% bootstrap_form form %}
+				<button type="submit"
+						class="btn btn-primary">
+						Search
+				</button>
+			</form>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

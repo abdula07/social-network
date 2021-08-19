@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block content %}
+<div class="container">
+	<div class="border p-3 shadow">
+	{% if query %}
+		<h1>Image containing "{{ query }}"</h1>
+		<h3>
+			{% with results.count as total_results %}
+				Found {{ total_results }}
+				result {{ total_results|pluralize }}
+			{% endwith %}
+		</h3>
+		{% for image in results %}
+			 <h4>
+			 	<a href="{{ image.get_absolute_url }}">
+			 		{{ image.title }}
+			 	</a>
+			 </h4>
+			 {{ image.body|truncatewords:4 }}
+		{% empty %}
+			<p>
+				There are no results
+				for your query
+			</p>
+		{% endfor %}
+		<p>
+			<a href="{% url 'images:images_search' %}">
+				Search again
+			</a>
+		</p>
+	{% else %}
+		<form action="." method="get">
+			{% bootstrap_form form %}
+			<button type="submit"
+					class="btn btn-primary">
+					Search
+			</button>
+		</form>
+	{% endif %}
+	</div>
+</div>
+{% endblock %}

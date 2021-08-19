@@ -5,12 +5,14 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import ImageCreateForm
+from .forms import ImageCreateForm, SearchForm
 from .models import Image
 from common.decorators import ajax_required
 from actions.utils import create_action
 from django.conf import settings
 import redis
+from django.contrib.postgres.search import SearchVector, SearchQuery, \
+                                           SearchRank
 
 # Подключение к редис
 r = redis.StrictRedis(host=settings.REDIS_HOST,
@@ -78,7 +80,7 @@ def image_like(request):
             return JsonResponse({'status':'ok'})
         except:
             pass
-    return JsonResponse({'status':'ko'})
+    return JsonResponse({'status':'ok'})
 
 
 @login_required
@@ -93,10 +95,7 @@ def image_list(request):
         images = paginator.page(1)
     except EmptyPage:
         if request.is_ajax():
-        
-  
             return HttpResponse('')
-
         images = paginator.page(paginator.num_pages)
     if request.is_ajax():
         return render(request,
@@ -109,12 +108,35 @@ def image_list(request):
 
 @login_required
 def image_ranking(request):
-  image_ranking = r.zrange('image_ranking', 0, -1, desc=True)[:10]
-  image_ranking_ids = [int(id) for id in image_ranking]
+    image_ranking = r.zrange('image_ranking', 0, -1, desc=True)[:10]
+    image_ranking_ids = [int(id) for id in image_ranking]
 
-  most_viewed = list(Image.objects.filter(id__in=image_ranking_ids))
-  most_viewed.sort(key=lambda x: image_ranking_ids.index(x.id))
-  return render(request,
-                'images/image/ranking.html',
-                {'section': 'images',
-                'most_viewed': most_viewed})
+    most_viewed = list(Image.objects.filter(id__in=image_ranking_ids))
+    most_viewed.sort(key=lambda x: image_ranking_ids.index(x.id))
+    return render(request,
+                  'images/image/ranking.html',
+                  {'section': 'images',
+                  'most_viewed': most_viewed})
+
+def search_images(request):
+    images = Image.objects.all()
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            search_vector = SearchVector('title', weight='A')
+            search_query = SearchQuery(query)
+            results = Image.objects.annotate(rank=SearchRank(
+                                             search_vector,
+                                             search_query))\
+                                             .filter(rank__gte=0.3)\
+                                             .order_by('-rank')
+    return render(request,
+                  'images/image/search.html',
+                  {'images': images,
+                   'form': form,
+                   'query': query,
+                   'results': results})

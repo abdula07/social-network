@@ -2,8 +2,7 @@
 
 {% with user=action.user profile=action.user.profile %}
 
-<div class="row">
-  <div class="col-md-6">
+  <br>
   {% if profile.photo %}
       {% thumbnail user.profile.photo "600x600" crop="100%" as im %}
         <a href="{{ user.get_absolute_url }}">
@@ -15,7 +14,7 @@
         </a>
       {% endthumbnail %}
     {% endif %}
-    <div class="border p-3">
+    <div class="border p-3 shadow">
       <p>
         <span>{{ action.created|timesince }} ago</span>
         <a href="{{ user.get_absolute_url }}">
@@ -29,11 +28,9 @@
         {% endif %}
       </p>
     </div>
-  <div class="col-md-6">
-  </div>
-</div>
 
-    
+
+    <!--
     {% if action.target %}
       {% with target=action.target %}
         {% if target.image %}
