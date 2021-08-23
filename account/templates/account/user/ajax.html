@@ -1,0 +1,34 @@
+{% load static %}
+{% load thumbnail %}
+
+<div class="container">
+  <div class="row
+              row-cols-3 
+              row-cols-sm-4
+              row-cols-md-5 g-3">
+    {% for user in users %}
+      <div class="col">
+        <a class="p-3" href="{{ user.get_absolute_url }}">
+          {% if user.profile.photo %}
+            {% thumbnail user.profile.photo "200x200" crop="100%"  as im %}
+              <image class="img-fluid rounded-circle 
+                            rounded mx-auto d-block" 
+                     src="{{ im.url }}"> 
+              </image>
+            {% endthumbnail %}
+          {% else %}
+        		<image src="{% static 'img/no.png' %}"
+        			   class="img-fluid rounded-circle
+        			   		  rounded mx-auto d-block">
+        		</image>
+          {% endif %}
+        </a>
+     
+          <p class="text-center fw-bold">
+            {{ user.get_full_name }}
+          </p>
+        
+      </div>  
+    {% endfor %}
+  </div>
+</div>

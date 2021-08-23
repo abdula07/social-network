@@ -17,7 +17,9 @@ from images.models import Image
 from django.contrib.postgres.search import SearchVector, SearchQuery, \
 										   SearchRank
 from django.conf import settings
-
+from django.core.paginator import Paginator, EmptyPage, \
+                                  PageNotAnInteger           
+    
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -108,6 +110,23 @@ def edit(request):
 @login_required
 def user_list(request):
     users = User.objects.filter(is_active=True)
+    paginator = Paginator(users, 15)
+    page = request.GET.get('page')
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+
+    except EmptyPage:
+        if request.is_ajax():
+            return HttpResponse('')
+        users = paginator.page(paginator.num_pages)
+
+    if request.is_ajax():
+        return render(request,
+                      'account/user/ajax.html',
+                      {'users': users})
+
     return render(request, 'account/user/list.html',
                   {'section': 'people',
                   'users': users})

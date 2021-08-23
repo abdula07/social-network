@@ -145,8 +145,13 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+# Настройки SMPT сервера
+DEFAULT_FROM_EMAIL = 'kajnazarov06@mail.ru'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST_USER = 'kajnazarov06@mail.ru'
+EMAIL_HOST_PASSWORD = 'abdula2003'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

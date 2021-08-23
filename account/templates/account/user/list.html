@@ -1,48 +1,48 @@
 {% extends "base.html" %}
 {% load thumbnail %}
 {% load static %}
+{% load bootstrap5 %}
 
 {% block title %}People{% endblock %}
 
 {% block content %}
-<div class="container">
-  <a href="{% url 'search_user' %}">
-        <form>
-            <input class="form-control" 
-                   type="text" 
-                   placeholder="Search"
-                   aria-label="Search">
-        </form>
-  </a>
-  <div class="row
-              row-cols-3 
-              row-cols-sm-4
-              row-cols-md-5 g-3">
-    {% for user in users %}
-      <div class="col">
-        <a class="p-3" href="{{ user.get_absolute_url }}">
-          {% if user.profile.photo %}
-            {% thumbnail user.profile.photo "180x180" crop="100%"  as im %}
-              <image class="img-fluid rounded-circle 
-                            rounded mx-auto d-block" 
-                     src="{{ im.url }}"> 
-              </image>
-            {% endthumbnail %}
-          {% else %}
-            <image src="{% static 'img/no_image.png' %}"
-                 class="img-fluid rounded-circle 
-                          rounded mx-auto d-block"
-                 style="width: 180px; height: 180px">
-            </image>   
-          {% endif %}
-        </a>
-     
-          <p class="text-center fw-bold">
-            {{ user.get_full_name }}
-          </p>
-        
-      </div>  
-    {% endfor %}
-  </div>
+<div id="account-list">
+	<div class="container">
+		<a href="{% url 'search_user' %}">
+       		<form>
+            	<input  class="form-control" 
+                		type="text" 
+                		placeholder="Search"
+                		aria-label="Search">
+        	</form>
+  		</a>
+  	</div>
+  	<br>
+    {% include "account/user/ajax.html" %}
 </div>
+
+{% endblock %}
+
+{% block domready %}
+	var page = 1;
+	var empty_page = false;
+	var block_request = false;
+
+	$(window).scroll(function() {
+		var margin = $(document).height() - $(window).height() - 200;
+		if ($(window).scrollTop() > margin && empty_page == false
+										   && block_request == false) {
+			block_request = true;
+			page += 1;
+
+			$.get('?page=' + page, function (data) {
+				if (data == '') {
+					empty_page = true;
+				} else {
+					block_request = false;
+					$('#account-list').append(data);
+				}
+			});
+		}
+	});
 {% endblock %}

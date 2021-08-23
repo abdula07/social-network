@@ -6,71 +6,84 @@
 
 {% block content %}
 <div class="container">
-  <div class="row row-cols-2">
-    <div class="col-md-4">
-      {% if user.profile.photo %}
-        {% thumbnail user.profile.photo "150x150" crop="100%" as im %}
-          <img src="{{ im.url }}" 
-               class="img-fluid rounded-circle
-                      rounded mx-auto d-block p-4">
-        {% endthumbnail %}
-      {% else %}
-        <img src="{% static 'img/no_image.png' %}"
-             class="img-fluid rounded-circle 
-                      rounded mx-auto d-block">
-        
-      {% endif %}
-
+    <div class="row row-cols-2">
+        <div class="col-md-4">
+            {% if user.profile.photo %}
+                {% thumbnail user.profile.photo "150x150" crop="100%" as im %}
+                    <img src="{{ im.url }}" 
+                         class="img-fluid rounded-circle
+                                rounded mx-auto d-block p-4">
+                {% endthumbnail %}
+            {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="170"
+                     height="170"
+                     fill="currentColor"
+                     class="img-fluid bi bi-person-circle
+                            img-fluid rounded-circle
+                            rounded mx-auto d-block p-4"
+                     viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
+            {% endif %}
+        </div>
+        <div class="col-md-5">
+            <h1>{{ user.username }}</h1>
+            <div class="row">
+                <div class="col-sm-6 col-md-3 col-7">
+                    {% with total_followers=user.followers.count %}
+                        <span class="count
+                                     border p-1">
+                            <span class="total">{{ total_followers }}</span>
+                            follower{{ total_followers|pluralize }}
+                        </span>
+                        <span class="px-2"></span>
+                    {% endwith %}
+                </div>
+                <div class="col-sm-6 col-md-3 col-5">
+                    <a href="#"
+                       data-id="{{ user.id }}" 
+                       data-action="{% if request.user in user.followers.all %}
+                                    un{% endif %}follow"
+                       class="follow
+                              button
+                              border p-1
+                              btn-outline-primary">
+                        {% if request.user not in user.followers.all %}
+                            Follow
+                        {% else %}
+                            Unfollow
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-5">
-    	<h1>{{ user.username }}</h1>
-    	{% with total_followers=user.followers.count %}
-      		<span class="count
-      					 border p-1">
- 					<span class="total">{{ total_followers }}</span>
- 					follower{{ total_followers|pluralize }}
-      		</span>
-      		<span class="px-2"></span>
- 			<a href="#"
- 			   data-id="{{ user.id }}" 
-         data-action="{% if request.user in user.followers.all %}
-                      un{% endif %}follow"
- 			   class="follow
- 			   		    button
- 			   		    border p-1
- 			   		    btn-outline-primary">
- 			  {% if request.user not in user.followers.all %}
-                  Follow
- 			  {% else %}
-                  Unfollow
- 			  {% endif %}
- 			</a>
- 		{% endwith %}
+    <br>
+    <div class="border-top"></div>
     </div>
-  </div>
-  <div class="border-top"></div>
-  </div>
-  <br>
-  <div class="container">
-  <div class="row 
-              row-cols-3 
-              row-cols-sm-3 
-              row-cols-md-6 g-1">
-    {% for image in images %}
-      <div class="col-3">
-        <a href="{{ image.get_absolute_url }}">
-          {% thumbnail image.image "200x200" crop="100%" as im %}
-            <a href="{{ image.get_absolute_url }}">
-            <image class="img-fluid" 
-                   src="{{ im.url }}">
-            </image>
-        </a>
-          {% endthumbnail %}
-        </a>
-      </div>
-    {% endfor %}
-  </div>
-  </div>
+    <br>
+    <div class="container">
+        <div class="row 
+                    row-cols-3 
+                    row-cols-sm-3 
+                    row-cols-md-6 g-1">
+            {% for image in images %}
+                <div class="col-3">
+                    <a href="{{ image.get_absolute_url }}">
+                        {% thumbnail image.image "200x200" crop="100%" as im %}
+                            <a href="{{ image.get_absolute_url }}">
+                                <image class="img-fluid" 
+                                       src="{{ im.url }}">
+                                </image>
+                            </a>
+                        {% endthumbnail %}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 {% endblock %}
